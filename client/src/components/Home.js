@@ -16,7 +16,7 @@ const Home = () => {
         </Col>
         <Col md={6}>
           <img 
-            src="https://via.placeholder.com/600x400?text=Assignment+Helper" 
+            src="C:\Users\user\OneDrive\Documents\Assignment_Helper.jpg" 
             alt="Tutor helping student" 
             className="img-fluid rounded shadow"
           />
