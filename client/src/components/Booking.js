@@ -65,6 +65,7 @@ const Booking = () => {
         details: ''
       });
       setStartDate(new Date());
+      
 
     } catch (error) {
       console.error('Booking error:', error);

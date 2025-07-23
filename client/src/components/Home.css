@@ -1,0 +1,371 @@
+/* Main Styles */
+.home-page {
+  overflow-x: hidden;
+  padding-top: 80px; /* For fixed navbar */
+}
+
+/* Navigation */
+.navbar {
+  padding: 15px 0;
+  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.9) !important;
+  backdrop-filter: blur(10px);
+}
+
+.navbar.scrolled {
+  padding: 10px 0;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.nav-link {
+  font-weight: 500;
+  padding: 8px 15px !important;
+}
+
+/* Hero Carousel */
+.hero-banner {
+  height: 100vh;
+  max-height: 800px;
+  position: relative;
+  margin-top: -80px;
+}
+
+.carousel-slide {
+  height: 100vh;
+  max-height: 800px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.carousel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.carousel-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  padding-top: 5rem;
+}
+
+.carousel-content h1 {
+  font-weight: 800;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 3rem;
+}
+
+.carousel-content .lead {
+  font-size: 1.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Section Titles */
+.section-title {
+  position: relative;
+  padding-bottom: 1rem;
+  color: #2c3e50;
+  font-weight: 700;
+  text-align: center;
+  font-size: 2.2rem;
+}
+
+.section-title:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: #3498db;
+  border-radius: 2px;
+}
+
+/* Services Section */
+.services-section {
+  background: #f8f9fa;
+  padding: 6rem 0;
+}
+
+.service-card {
+  transition: all 0.3s ease;
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  background: white;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.service-icon {
+  color: #3498db;
+  transition: all 0.3s ease;
+}
+
+.service-card:hover .service-icon {
+  transform: scale(1.1);
+  color: #2c3e50;
+}
+
+.service-badge {
+  background: #3498db;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+  padding: 5px 10px;
+}
+
+
+/* Success Stories Page */
+.success-stories-page {
+  padding-top: 100px;
+}
+
+.testimonial-card {
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.testimonial-card .text-warning {
+  color: #f1c40f !important;
+}
+
+.pagination-button {
+    min-width: 40px;
+    margin: 0 5px;
+}
+
+/* Filter Buttons */
+.filter-btn {
+  transition: all 0.2s ease;
+}
+
+.filter-btn:not(.active):hover {
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+.service-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Services Dropdown */
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  padding: 10px 0;
+  margin-top: 10px;
+}
+
+.dropdown-item {
+  padding: 8px 20px;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(52, 152, 219, 0.1);
+}
+
+/* Guarantees Section */
+.guarantees-section {
+  background: white;
+  padding: 6rem 0;
+}
+
+.guarantee-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.guarantee-item {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.guarantee-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.guarantee-icon {
+  color: #3498db;
+  margin-bottom: 1rem;
+}
+
+/* About Section */
+.about-section {
+  background: #f8f9fa;
+  padding: 6rem 0;
+}
+
+.about-image {
+  position: relative;
+}
+
+.about-image img {
+  border: 5px solid white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.about-image img:hover {
+  transform: scale(1.02);
+}
+
+.achievement-item {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.achievement-item h4 {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.blockquote {
+  font-style: italic;
+  color: #555;
+}
+
+/* Stats Section */
+.stats-section {
+  background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+  color: white;
+  padding: 6rem 0;
+}
+
+.stat-item {
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.stat-icon {
+  color: #f1c40f;
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+/* Fixed Book Button */
+.fixed-book-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 1000;
+  animation: pulse 2s infinite;
+}
+
+.fixed-book-button .btn {
+  padding: 12px 25px;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .hero-banner,
+  .carousel-slide {
+    height: auto;
+    min-height: 500px;
+  }
+  
+  .carousel-content {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  .carousel-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .stat-item {
+    margin-bottom: 1rem;
+  }
+  
+  .about-image {
+    margin-top: 2rem;
+  }
+
+  .fixed-book-button {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .fixed-book-button .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+  
+  .navbar-collapse {
+    background: rgba(52, 58, 64, 0.95);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 10px;
+    backdrop-filter: blur(10px);
+  }
+}
