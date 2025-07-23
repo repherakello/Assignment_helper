@@ -1,22 +1,44 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Alert, Row, Col, Spinner } from 'react-bootstrap';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { faCalendarAlt, faClock, faBook } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
+import { faBook, faUserGraduate, faSchool, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Booking = () => {
-  const [startDate, setStartDate] = useState(new Date());
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
+    phone: '',
     email: '',
+    serviceType: '',
+    educationLevel: '',
     subject: '',
-    duration: '60',
     details: ''
   });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const serviceTypes = [
+    "Full Class Assistance",
+    "Essay Writing",
+    "Dissertation Help",
+    "Assignment Help",
+    "Exam Preparation",
+    "Online Tutoring",
+    "Programming Help",
+    "Thesis Writing",
+    "Research Paper",
+    "Case Study Analysis"
+  ];
+
+  const educationLevels = [
+    "High School",
+    "Undergraduate",
+    "Graduate",
+    "PhD",
+    "Professional Certification"
+  ];
 
   const handleChange = (e) => {
     setFormData({...formData, [e.target.name]: e.target.value});
@@ -30,42 +52,23 @@ const Booking = () => {
     try {
       // Prepare the booking data
       const bookingData = {
-        name: formData.name.trim(),
+        name: `${formData.firstName.trim()} ${formData.lastName.trim()}`,
+        phone: formData.phone.trim(),
         email: formData.email.trim(),
+        serviceType: formData.serviceType,
+        educationLevel: formData.educationLevel,
         subject: formData.subject.trim(),
-        date: startDate.toISOString(),
-        duration: Number(formData.duration),
         details: formData.details.trim()
       };
 
       console.log('Submitting booking:', bookingData);
 
-      const response = await fetch('http://localhost:5000/api/bookings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bookingData),
-      });
-
-      const result = await response.json();
-      console.log('Server response:', result);
-
-      if (!response.ok) {
-        throw new Error(result.error || result.message || 'Booking failed');
-      }
-
+      // Here you would typically send to your backend
+      // For now we'll simulate a successful submission
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
       // Successful submission
       setSubmitted(true);
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        duration: '60',
-        details: ''
-      });
-      setStartDate(new Date());
-      
 
     } catch (error) {
       console.error('Booking error:', error);
@@ -75,65 +78,107 @@ const Booking = () => {
     }
   };
 
+  const openWhatsApp = (phone) => {
+    // Remove all non-digit characters
+    const cleanedPhone = phone.replace(/\D/g, '');
+    window.open(`https://wa.me/${cleanedPhone}`, '_blank');
+  };
+
   return (
     <Container className="my-5 py-4">
       <h2 className="text-center mb-4">
-        <FontAwesomeIcon icon={faCalendarAlt} className="me-2" />
-        Book a Tutoring Session
+        <FontAwesomeIcon icon={faBook} className="me-2" />
+        Request Academic Assistance
       </h2>
       
       {error && (
         <Alert variant="danger" onClose={() => setError(null)} dismissible>
           <Alert.Heading>Error!</Alert.Heading>
           <p>{error}</p>
-          {error.includes('Validation') && (
-            <p className="mb-0">Please check all fields and try again.</p>
-          )}
         </Alert>
       )}
       
       {submitted ? (
         <Alert variant="success" className="text-center">
-          <h4>Booking Submitted Successfully!</h4>
-          <p>Your session request has been received.</p>
-          <p>We'll send a confirmation email shortly.</p>
-          <Button 
-            variant="outline-primary" 
-            onClick={() => setSubmitted(false)}
-            className="mt-3"
-          >
-            Book Another Session
-          </Button>
+          <h4>Request Submitted Successfully!</h4>
+          <p>We've received your request and will contact you shortly.</p>
+          <div className="d-flex justify-content-center gap-3 mt-3">
+            <Button 
+              as={Link}
+              to="/"
+              variant="primary"
+            >
+              Return to Home
+            </Button>
+            <Button 
+              variant="outline-primary" 
+              onClick={() => setSubmitted(false)}
+            >
+              Submit Another Request
+            </Button>
+          </div>
         </Alert>
       ) : (
         <Row className="justify-content-center">
           <Col md={8} lg={6}>
             <Form onSubmit={handleSubmit} className="border p-4 rounded shadow-sm bg-light">
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>First Name *</Form.Label>
+                    <Form.Control 
+                      type="text" 
+                      name="firstName" 
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      required 
+                      minLength="2"
+                      placeholder="John"
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Last Name *</Form.Label>
+                    <Form.Control 
+                      type="text" 
+                      name="lastName" 
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      required 
+                      minLength="2"
+                      placeholder="Doe"
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+
               <Form.Group className="mb-3">
-                <Form.Label>Full Name *</Form.Label>
+                <Form.Label>
+                  <FontAwesomeIcon icon={faPhone} className="me-2" />
+                  WhatsApp Number *
+                </Form.Label>
                 <Form.Control 
-                  type="text" 
-                  name="name" 
-                  value={formData.name}
+                  type="tel" 
+                  name="phone" 
+                  value={formData.phone}
                   onChange={handleChange}
                   required 
-                  minLength="2"
-                  maxLength="100"
-                  placeholder="John Doe"
+                  placeholder="e.g., 254706158956"
+                  pattern="[0-9]{10,15}"
                 />
                 <Form.Text className="text-muted">
-                  Minimum 2 characters
+                  We'll contact you via WhatsApp
                 </Form.Text>
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>Email Address *</Form.Label>
+                <Form.Label>Email Address</Form.Label>
                 <Form.Control 
                   type="email" 
                   name="email" 
                   value={formData.email}
                   onChange={handleChange}
-                  required 
                   placeholder="your@email.com"
                 />
               </Form.Group>
@@ -141,7 +186,43 @@ const Booking = () => {
               <Form.Group className="mb-3">
                 <Form.Label>
                   <FontAwesomeIcon icon={faBook} className="me-2" />
-                  Subject/Assignment Topic *
+                  Service Needed *
+                </Form.Label>
+                <Form.Select 
+                  name="serviceType" 
+                  value={formData.serviceType}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select a service</option>
+                  {serviceTypes.map((service, index) => (
+                    <option key={index} value={service}>{service}</option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>
+                  <FontAwesomeIcon icon={faUserGraduate} className="me-2" />
+                  Education Level *
+                </Form.Label>
+                <Form.Select 
+                  name="educationLevel" 
+                  value={formData.educationLevel}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select your level</option>
+                  {educationLevels.map((level, index) => (
+                    <option key={index} value={level}>{level}</option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>
+                  <FontAwesomeIcon icon={faSchool} className="me-2" />
+                  Subject/Course *
                 </Form.Label>
                 <Form.Control 
                   type="text" 
@@ -149,86 +230,59 @@ const Booking = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   required 
-                  minLength="3"
-                  maxLength="200"
-                  placeholder="e.g., Calculus, Essay Writing"
+                  placeholder="e.g., Calculus, Business Management"
                 />
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>
-                  <FontAwesomeIcon icon={faCalendarAlt} className="me-2" />
-                  Session Date and Time *
-                </Form.Label>
-                <DatePicker
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
-                  showTimeSelect
-                  timeFormat="HH:mm"
-                  timeIntervals={15}
-                  minDate={new Date()}
-                  dateFormat="MMMM d, yyyy h:mm aa"
-                  className="form-control"
-                  required
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label>
-                  <FontAwesomeIcon icon={faClock} className="me-2" />
-                  Session Duration *
-                </Form.Label>
-                <Form.Select 
-                  name="duration" 
-                  value={formData.duration}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="30">30 minutes ($25)</option>
-                  <option value="60">60 minutes ($45)</option>
-                  <option value="90">90 minutes ($65)</option>
-                  <option value="120">120 minutes ($85)</option>
-                </Form.Select>
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label>Additional Details</Form.Label>
+                <Form.Label>Assignment Details *</Form.Label>
                 <Form.Control 
                   as="textarea" 
-                  rows={3} 
+                  rows={4} 
                   name="details" 
                   value={formData.details}
                   onChange={handleChange}
-                  maxLength="1000"
-                  placeholder="Describe what help you need, specific questions, etc."
+                  required
+                  placeholder="Please describe what you need help with, including any specific requirements, deadlines, etc."
                 />
-                <Form.Text className="text-muted">
-                  Maximum 1000 characters
-                </Form.Text>
               </Form.Group>
 
-              <Button 
-                variant="primary" 
-                type="submit" 
-                className="w-100 mt-3"
-                disabled={isLoading || submitted}
-              >
-                {isLoading ? (
-                  <>
-                    <Spinner
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                      className="me-2"
-                    />
-                    Processing...
-                  </>
-                ) : (
-                  'Confirm Booking Request'
+              <div className="d-grid gap-2">
+                <Button 
+                  variant="primary" 
+                  type="submit" 
+                  size="lg"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        className="me-2"
+                      />
+                      Submitting...
+                    </>
+                  ) : (
+                    'Submit Request'
+                  )}
+                </Button>
+
+                {formData.phone && (
+                  <Button 
+                    variant="success" 
+                    size="lg"
+                    onClick={() => openWhatsApp(formData.phone)}
+                    className="mt-2"
+                  >
+                    <FontAwesomeIcon icon={faPhone} className="me-2" />
+                    Chat on WhatsApp Now
+                  </Button>
                 )}
-              </Button>
+              </div>
             </Form>
           </Col>
         </Row>

@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Booking from './components/Booking';
 import Dashboard from './components/Dashboard';
 import CustomNavbar from './components/Navbar';
+import Services from './components/Services';
 import SuccessStories from './components/SuccessStories';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/book" element={<Booking />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/success-stories" element={<SuccessStories />} />
+          <Route path="/services" element={<Services />} />
           <Route path="/about" element={<SuccessStories />} /> // If you want /about to show success stories
         </Routes>
       </main>
