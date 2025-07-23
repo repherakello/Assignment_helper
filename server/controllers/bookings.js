@@ -1,0 +1,65 @@
+const Booking = require('../models/Booking');
+const APIFeatures = require('../utils/apiFeatures'); // You'll need to create this
+
+exports.getAllBookings = async (req, res) => {
+  try {
+    const features = new APIFeatures(Booking.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+    
+    const bookings = await features.query;
+
+    res.status(200).json({
+      status: 'success',
+      results: bookings.length,
+      data: {
+        bookings
+      }
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message
+    });
+  }
+};
+
+exports.updateBookingStatus = async (req, res) => {
+  try {
+    const booking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      {status: req.body.status},
+      { new: true, runValidators: true }
+    );
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        booking
+      }
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message
+    });
+  }
+};
+
+exports.deleteBooking = async (req, res) => {
+  try {
+    await Booking.findByIdAndDelete(req.params.id);
+    
+    res.status(204).json({
+      status: 'success',
+      data: null
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message
+    });
+  }
+};
