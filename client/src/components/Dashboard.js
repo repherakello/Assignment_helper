@@ -68,6 +68,19 @@ const Dashboard = () => {
     }
   };
 
+  const handleDeleteBooking = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.delete(
+        `http://localhost:5000/api/bookings/${id}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      fetchBookings();
+    } catch (err) {
+      setError(err.response?.data?.message || err.message);
+    }
+  };
+
   const viewDetails = (booking) => {
     setSelectedBooking(booking);
     setShowDetailsModal(true);
@@ -211,16 +224,28 @@ const Dashboard = () => {
                       size="sm" 
                       className="me-2"
                       onClick={() => handleStatusUpdate(booking._id, 'completed')}
+                      disabled={booking.status === 'completed'}
                     >
                       <FontAwesomeIcon icon={faCheck} /> Complete
                     </Button>
                     <Button 
                       variant="outline-danger" 
                       size="sm"
+                      className="me-2"
                       onClick={() => handleStatusUpdate(booking._id, 'rejected')}
+                      disabled={booking.status === 'rejected'}
                     >
                       <FontAwesomeIcon icon={faTimes} /> Reject
                     </Button>
+                    {booking.status === 'completed' && (
+                      <Button 
+                        variant="danger" 
+                        size="sm"
+                        onClick={() => handleDeleteBooking(booking._id)}
+                      >
+                        <FontAwesomeIcon icon={faTrash} /> Delete
+                      </Button>
+                    )}
                   </td>
                 </tr>
               ))
@@ -282,6 +307,7 @@ const Dashboard = () => {
                   handleStatusUpdate(selectedBooking._id, 'completed');
                   setShowDetailsModal(false);
                 }}
+                disabled={selectedBooking.status === 'completed'}
               >
                 <FontAwesomeIcon icon={faCheck} className="me-2" />
                 Mark as Completed
@@ -292,10 +318,23 @@ const Dashboard = () => {
                   handleStatusUpdate(selectedBooking._id, 'rejected');
                   setShowDetailsModal(false);
                 }}
+                disabled={selectedBooking.status === 'rejected'}
               >
                 <FontAwesomeIcon icon={faTimes} className="me-2" />
                 Reject Booking
               </Button>
+              {selectedBooking.status === 'completed' && (
+                <Button 
+                  variant="danger"
+                  onClick={() => {
+                    handleDeleteBooking(selectedBooking._id);
+                    setShowDetailsModal(false);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faTrash} className="me-2" />
+                  Delete Booking
+                </Button>
+              )}
             </div>
           </div>
         </div>
