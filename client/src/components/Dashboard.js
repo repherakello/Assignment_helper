@@ -7,7 +7,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faSync, faTrash, faEdit, faCheck, 
-  faTimes, faSearch, faFilter
+  faTimes, faSearch, faFilter, faInfoCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 const Dashboard = () => {
@@ -16,6 +16,14 @@ const Dashboard = () => {
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [stats, setStats] = useState({
+    total: 0,
+    pending: 0,
+    completed: 0,
+    rejected: 0
+  });
 
   const fetchBookings = async () => {
     try {
@@ -25,11 +33,21 @@ const Dashboard = () => {
         params: { status: statusFilter === 'all' ? undefined : statusFilter }
       });
       setBookings(data.data.bookings);
+      calculateStats(data.data.bookings);
     } catch (err) {
       setError(err.response?.data?.message || err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const calculateStats = (bookings) => {
+    setStats({
+      total: bookings.length,
+      pending: bookings.filter(b => b.status === 'pending').length,
+      completed: bookings.filter(b => b.status === 'completed').length,
+      rejected: bookings.filter(b => b.status === 'rejected').length
+    });
   };
 
   useEffect(() => {
@@ -44,15 +62,21 @@ const Dashboard = () => {
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      fetchBookings(); // Refresh data
+      fetchBookings();
     } catch (err) {
       setError(err.response?.data?.message || err.message);
     }
   };
 
+  const viewDetails = (booking) => {
+    setSelectedBooking(booking);
+    setShowDetailsModal(true);
+  };
+
   const filteredBookings = bookings.filter(booking =>
     `${booking.firstName} ${booking.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    booking.subject.toLowerCase().includes(searchTerm.toLowerCase())
+    booking.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    booking.serviceType.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) return (
@@ -71,6 +95,34 @@ const Dashboard = () => {
 
       {error && <Alert variant="danger">{error}</Alert>}
 
+      {/* Stats Cards */}
+      <Row className="mb-4">
+        <Col md={3}>
+          <div className="stat-card bg-primary text-white p-3 rounded">
+            <h5>Total Bookings</h5>
+            <h2>{stats.total}</h2>
+          </div>
+        </Col>
+        <Col md={3}>
+          <div className="stat-card bg-warning text-dark p-3 rounded">
+            <h5>Pending</h5>
+            <h2>{stats.pending}</h2>
+          </div>
+        </Col>
+        <Col md={3}>
+          <div className="stat-card bg-success text-white p-3 rounded">
+            <h5>Completed</h5>
+            <h2>{stats.completed}</h2>
+          </div>
+        </Col>
+        <Col md={3}>
+          <div className="stat-card bg-danger text-white p-3 rounded">
+            <h5>Rejected</h5>
+            <h2>{stats.rejected}</h2>
+          </div>
+        </Col>
+      </Row>
+
       {/* Search and Filter Bar */}
       <Row className="mb-4 g-3">
         <Col md={6}>
@@ -79,7 +131,7 @@ const Dashboard = () => {
               <FontAwesomeIcon icon={faSearch} />
             </InputGroup.Text>
             <FormControl
-              placeholder="Search by name or subject..."
+              placeholder="Search by name, subject or service..."
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </InputGroup>
@@ -147,6 +199,14 @@ const Dashboard = () => {
                   </td>
                   <td>
                     <Button 
+                      variant="outline-info" 
+                      size="sm" 
+                      className="me-2"
+                      onClick={() => viewDetails(booking)}
+                    >
+                      <FontAwesomeIcon icon={faInfoCircle} /> Details
+                    </Button>
+                    <Button 
                       variant="outline-success" 
                       size="sm" 
                       className="me-2"
@@ -174,6 +234,72 @@ const Dashboard = () => {
           </tbody>
         </Table>
       </div>
+
+      {/* Booking Details Modal */}
+      {showDetailsModal && selectedBooking && (
+        <div className="modal-backdrop">
+          <div className="modal-content p-4 bg-white rounded shadow">
+            <div className="d-flex justify-content-between mb-3">
+              <h4>Booking Details</h4>
+              <Button variant="outline-secondary" onClick={() => setShowDetailsModal(false)}>
+                Close
+              </Button>
+            </div>
+            
+            <div className="mb-3">
+              <h5>{selectedBooking.firstName} {selectedBooking.lastName}</h5>
+              <p className="text-muted">{selectedBooking.email}</p>
+              <p><strong>Phone:</strong> {selectedBooking.phone}</p>
+            </div>
+            
+            <div className="mb-3">
+              <p><strong>Service:</strong> {selectedBooking.serviceType}</p>
+              <p><strong>Education Level:</strong> {selectedBooking.educationLevel}</p>
+              <p><strong>Subject:</strong> {selectedBooking.subject}</p>
+              <p><strong>Status:</strong> 
+                <Badge 
+                  bg={
+                    selectedBooking.status === 'completed' ? 'success' :
+                    selectedBooking.status === 'rejected' ? 'danger' :
+                    selectedBooking.status === 'in-progress' ? 'warning' : 'secondary'
+                  }
+                  className="ms-2 text-capitalize"
+                >
+                  {selectedBooking.status}
+                </Badge>
+              </p>
+            </div>
+            
+            <div className="mb-3">
+              <h6>Assignment Details:</h6>
+              <p>{selectedBooking.details}</p>
+            </div>
+            
+            <div className="d-flex gap-2">
+              <Button 
+                variant="success" 
+                onClick={() => {
+                  handleStatusUpdate(selectedBooking._id, 'completed');
+                  setShowDetailsModal(false);
+                }}
+              >
+                <FontAwesomeIcon icon={faCheck} className="me-2" />
+                Mark as Completed
+              </Button>
+              <Button 
+                variant="danger"
+                onClick={() => {
+                  handleStatusUpdate(selectedBooking._id, 'rejected');
+                  setShowDetailsModal(false);
+                }}
+              >
+                <FontAwesomeIcon icon={faTimes} className="me-2" />
+                Reject Booking
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </Container>
   );
 };

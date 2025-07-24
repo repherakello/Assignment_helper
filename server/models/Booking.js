@@ -1,65 +1,84 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
 
 const bookingSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: [true, 'First name is required'],
     trim: true,
-    maxlength: [50, 'First name cannot exceed 50 characters']
+    minlength: [2, 'First name must be at least 2 characters']
   },
   lastName: {
     type: String,
     required: [true, 'Last name is required'],
     trim: true,
-    maxlength: [50, 'Last name cannot exceed 50 characters']
+    minlength: [2, 'Last name must be at least 2 characters']
   },
   phone: {
     type: String,
     required: [true, 'Phone number is required'],
+    trim: true,
     validate: {
       validator: function(v) {
         return /^[0-9]{10,15}$/.test(v);
       },
-      message: 'Please enter a valid phone number'
+      message: props => `${props.value} is not a valid phone number!`
     }
   },
   email: {
     type: String,
-    required: [true, 'Email is required'],
+    trim: true,
     lowercase: true,
-    validate: [validator.isEmail, 'Please provide a valid email']
+    validate: {
+      validator: function(v) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      },
+      message: props => `${props.value} is not a valid email address!`
+    }
   },
   serviceType: {
     type: String,
     required: [true, 'Service type is required'],
-    enum: [
-      'Full Class Assistance',
-      'Essay Writing',
-      'Dissertation Help',
-      // Add all other service types from your frontend
-    ]
+    enum: {
+      values: [
+        "Full Class Assistance",
+        "Essay Writing",
+        "Dissertation Help",
+        "Assignment Help",
+        "Exam Preparation",
+        "Online Tutoring",
+        "Programming Help",
+        "Thesis Writing",
+        "Research Paper",
+        "Case Study Analysis"
+      ],
+      message: '{VALUE} is not a valid service type'
+    }
   },
   educationLevel: {
     type: String,
     required: [true, 'Education level is required'],
-    enum: [
-      'High School',
-      'Undergraduate',
-      'Graduate',
-      'PhD',
-      'Professional Certification'
-    ]
+    enum: {
+      values: [
+        "High School",
+        "Undergraduate",
+        "Graduate",
+        "PhD",
+        "Professional Certification"
+      ],
+      message: '{VALUE} is not a valid education level'
+    }
   },
   subject: {
     type: String,
     required: [true, 'Subject is required'],
-    maxlength: [100, 'Subject cannot exceed 100 characters']
+    trim: true,
+    minlength: [2, 'Subject must be at least 2 characters']
   },
   details: {
     type: String,
     required: [true, 'Details are required'],
-    maxlength: [2000, 'Details cannot exceed 2000 characters']
+    trim: true,
+    minlength: [10, 'Details must be at least 10 characters']
   },
   status: {
     type: String,

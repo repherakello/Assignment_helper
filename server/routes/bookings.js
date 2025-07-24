@@ -1,17 +1,18 @@
+// routes/bookings.js
 const express = require('express');
-const { protect } = require('../middleware/auth');
-const {
-  getAllBookings,
-  updateBookingStatus,
-  deleteBooking
-} = require('../controllers/bookings');
-
 const router = express.Router();
+const bookingController = require('../controllers/bookings');
 
-router.use(protect);
+// Create a new booking
+router.post('/', bookingController.createBooking); // You’ll add this method next
 
-router.get('/', getAllBookings);
-router.patch('/:id', updateBookingStatus);
-router.delete('/:id', deleteBooking);
+// Get all bookings
+router.get('/', bookingController.getAllBookings);
+
+// Update booking status
+router.patch('/:id', bookingController.updateBookingStatus); // 👈 this must exist
+
+// Delete booking
+router.delete('/:id', bookingController.deleteBooking); // optional
 
 module.exports = router;

@@ -50,26 +50,33 @@ const Booking = () => {
     setIsLoading(true);
 
     try {
-      // Prepare the booking data
       const bookingData = {
-        name: `${formData.firstName.trim()} ${formData.lastName.trim()}`,
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
         phone: formData.phone.trim(),
         email: formData.email.trim(),
         serviceType: formData.serviceType,
         educationLevel: formData.educationLevel,
         subject: formData.subject.trim(),
-        details: formData.details.trim()
+        details: formData.details.trim(),
+        status: 'pending' // Default status
       };
 
-      console.log('Submitting booking:', bookingData);
+      const response = await fetch('http://localhost:5000/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingData)
+      });
 
-      // Here you would typically send to your backend
-      // For now we'll simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Successful submission
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to submit booking');
+      }
+
       setSubmitted(true);
-
     } catch (error) {
       console.error('Booking error:', error);
       setError(error.message || 'Failed to submit booking. Please check your information and try again.');
@@ -79,7 +86,6 @@ const Booking = () => {
   };
 
   const openWhatsApp = (phone) => {
-    // Remove all non-digit characters
     const cleanedPhone = phone.replace(/\D/g, '');
     window.open(`https://wa.me/${cleanedPhone}`, '_blank');
   };

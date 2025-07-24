@@ -1,6 +1,47 @@
 const Booking = require('../models/Booking');
-const APIFeatures = require('../utils/apiFeatures'); // You'll need to create this
+const APIFeatures = require('../utils/apiFeatures');
 
+// CREATE a new booking
+exports.createBooking = async (req, res) => {
+  try {
+    const {
+      firstName,
+      lastName,
+      phone,
+      email,
+      serviceType,
+      educationLevel,
+      subject,
+      details
+    } = req.body;
+
+    const booking = await Booking.create({
+      firstName,
+      lastName,
+      phone,
+      email,
+      serviceType,
+      educationLevel,
+      subject,
+      details
+    });
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        booking
+      }
+    });
+
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message
+    });
+  }
+};
+
+// GET all bookings
 exports.getAllBookings = async (req, res) => {
   try {
     const features = new APIFeatures(Booking.find(), req.query)
@@ -26,11 +67,12 @@ exports.getAllBookings = async (req, res) => {
   }
 };
 
+// UPDATE booking status
 exports.updateBookingStatus = async (req, res) => {
   try {
     const booking = await Booking.findByIdAndUpdate(
       req.params.id,
-      {status: req.body.status},
+      { status: req.body.status },
       { new: true, runValidators: true }
     );
 
@@ -48,6 +90,7 @@ exports.updateBookingStatus = async (req, res) => {
   }
 };
 
+// DELETE a booking
 exports.deleteBooking = async (req, res) => {
   try {
     await Booking.findByIdAndDelete(req.params.id);
