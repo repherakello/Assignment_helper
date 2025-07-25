@@ -5,9 +5,33 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  scroll-behavior: auto !important;
+}
+
+html {
+  scroll-behavior: auto !important;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Scroll restoration fixes */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Prevent scroll position inheritance */
+[data-router] {
+  scroll-behavior: auto !important;
+}
+
+/* Ensure proper scrolling containers */
+main {
+  flex: 1;
+  position: relative;
 }

@@ -47,7 +47,7 @@ const Home = () => {
       buttons: [
         { variant: "primary", text: "Get Started Now", link: "/book" },
         { variant: "outline-light", text: "About Us", link: "/about" },
-        { variant: "outline-light", text: "Contact Us", link: "https://wa.me/254706158956" }
+        { variant: "outline-light", text: "Contact Us", link: "https://wa.me/254742391394" }
       ]
     },
     {
@@ -57,7 +57,7 @@ const Home = () => {
       buttons: [
         { variant: "primary", text: "Get Started Now", link: "/book" },
         { variant: "outline-light", text: "Our Services", link: "/services" },
-        { variant: "outline-light", text: "WhatsApp Us", link: "https://wa.me/254706158956" }
+        { variant: "outline-light", text: "WhatsApp Us", link: "https://wa.me/254742391394" }
       ]
     }
   ];
