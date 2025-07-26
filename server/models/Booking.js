@@ -18,9 +18,7 @@ const bookingSchema = new mongoose.Schema({
     required: [true, 'Phone number is required'],
     trim: true,
     validate: {
-      validator: function(v) {
-        return /^[0-9]{10,15}$/.test(v);
-      },
+      validator: (v) => /^[0-9]{10,15}$/.test(v),
       message: props => `${props.value} is not a valid phone number!`
     }
   },
@@ -29,9 +27,7 @@ const bookingSchema = new mongoose.Schema({
     trim: true,
     lowercase: true,
     validate: {
-      validator: function(v) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-      },
+      validator: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
       message: props => `${props.value} is not a valid email address!`
     }
   },
@@ -85,6 +81,21 @@ const bookingSchema = new mongoose.Schema({
     enum: ['pending', 'in-progress', 'completed', 'rejected'],
     default: 'pending'
   },
+  deadline: {
+    type: Date,
+    required: [true, 'Deadline is required'],
+    validate: {
+      validator: (v) => v > Date.now(),
+      message: 'Deadline must be in the future'
+    }
+  },
+  ticketNumber: {
+    type: String,
+    unique: true,
+    required: true,
+    default: () => 'TKT-' + Math.random().toString(36).substr(2, 8).toUpperCase()
+  },
+  fileUrl: String,
   createdAt: {
     type: Date,
     default: Date.now

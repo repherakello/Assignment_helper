@@ -7,7 +7,8 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faSync, faTrash, faEdit, faCheck, 
-  faTimes, faSearch, faFilter, faInfoCircle
+  faTimes, faSearch, faFilter, faInfoCircle,
+  faCalendarAlt, faPaperclip, faTicketAlt
 } from '@fortawesome/free-solid-svg-icons';
 
 const Dashboard = () => {
@@ -89,8 +90,15 @@ const Dashboard = () => {
   const filteredBookings = bookings.filter(booking =>
     `${booking.firstName} ${booking.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
     booking.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    booking.serviceType.toLowerCase().includes(searchTerm.toLowerCase())
+    booking.serviceType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    booking.ticketNumber?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Not specified';
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
 
   if (loading) return (
     <Container className="text-center mt-5">
@@ -144,7 +152,7 @@ const Dashboard = () => {
               <FontAwesomeIcon icon={faSearch} />
             </InputGroup.Text>
             <FormControl
-              placeholder="Search by name, subject or service..."
+              placeholder="Search by name, subject, ticket or service..."
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </InputGroup>
@@ -176,10 +184,10 @@ const Dashboard = () => {
         <Table striped bordered hover>
           <thead className="table-dark">
             <tr>
+              <th>Ticket #</th>
               <th>Student</th>
-              <th>Contact</th>
               <th>Service</th>
-              <th>Education</th>
+              <th>Deadline</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -189,15 +197,21 @@ const Dashboard = () => {
               filteredBookings.map(booking => (
                 <tr key={booking._id}>
                   <td>
-                    <strong>{booking.firstName} {booking.lastName}</strong>
-                    <div className="text-muted small">{booking.subject}</div>
+                    <Badge bg="info">
+                      <FontAwesomeIcon icon={faTicketAlt} className="me-1" />
+                      {booking.ticketNumber || 'N/A'}
+                    </Badge>
                   </td>
                   <td>
-                    <div>{booking.email}</div>
-                    <div className="text-primary">{booking.phone}</div>
+                    <strong>{booking.firstName} {booking.lastName}</strong>
+                    <div className="text-muted small">{booking.subject}</div>
+                    <div className="text-primary small">{booking.phone}</div>
                   </td>
                   <td>{booking.serviceType}</td>
-                  <td>{booking.educationLevel}</td>
+                  <td>
+                    <FontAwesomeIcon icon={faCalendarAlt} className="me-1 text-secondary" />
+                    {formatDate(booking.deadline)}
+                  </td>
                   <td>
                     <Badge 
                       bg={
@@ -228,15 +242,16 @@ const Dashboard = () => {
                     >
                       <FontAwesomeIcon icon={faCheck} /> Complete
                     </Button>
-                    <Button 
-                      variant="outline-danger" 
-                      size="sm"
-                      className="me-2"
-                      onClick={() => handleStatusUpdate(booking._id, 'rejected')}
-                      disabled={booking.status === 'rejected'}
-                    >
-                      <FontAwesomeIcon icon={faTimes} /> Reject
-                    </Button>
+                    {booking.status !== 'rejected' && (
+                      <Button 
+                        variant="outline-danger" 
+                        size="sm"
+                        className="me-2"
+                        onClick={() => handleStatusUpdate(booking._id, 'rejected')}
+                      >
+                        <FontAwesomeIcon icon={faTimes} /> Reject
+                      </Button>
+                    )}
                     {booking.status === 'completed' && (
                       <Button 
                         variant="danger" 
@@ -263,7 +278,7 @@ const Dashboard = () => {
       {/* Booking Details Modal */}
       {showDetailsModal && selectedBooking && (
         <div className="modal-backdrop">
-          <div className="modal-content p-4 bg-white rounded shadow">
+          <div className="modal-content p-4 bg-white rounded shadow" style={{ maxWidth: '800px' }}>
             <div className="d-flex justify-content-between mb-3">
               <h4>Booking Details</h4>
               <Button variant="outline-secondary" onClick={() => setShowDetailsModal(false)}>
@@ -271,36 +286,73 @@ const Dashboard = () => {
               </Button>
             </div>
             
-            <div className="mb-3">
-              <h5>{selectedBooking.firstName} {selectedBooking.lastName}</h5>
-              <p className="text-muted">{selectedBooking.email}</p>
-              <p><strong>Phone:</strong> {selectedBooking.phone}</p>
-            </div>
+            <Row>
+              <Col md={6}>
+                <div className="mb-3">
+                  <h5>{selectedBooking.firstName} {selectedBooking.lastName}</h5>
+                  <p className="text-muted">{selectedBooking.email}</p>
+                  <p><strong>Phone:</strong> {selectedBooking.phone}</p>
+                </div>
+                
+                <div className="mb-3">
+                  <p>
+                    <strong>Ticket Number:</strong> 
+                    <Badge bg="info" className="ms-2">
+                      <FontAwesomeIcon icon={faTicketAlt} className="me-1" />
+                      {selectedBooking.ticketNumber || 'N/A'}
+                    </Badge>
+                  </p>
+                  <p><strong>Service:</strong> {selectedBooking.serviceType}</p>
+                  <p><strong>Education Level:</strong> {selectedBooking.educationLevel}</p>
+                  <p><strong>Subject:</strong> {selectedBooking.subject}</p>
+                  <p><strong>Status:</strong> 
+                    <Badge 
+                      bg={
+                        selectedBooking.status === 'completed' ? 'success' :
+                        selectedBooking.status === 'rejected' ? 'danger' :
+                        selectedBooking.status === 'in-progress' ? 'warning' : 'secondary'
+                      }
+                      className="ms-2 text-capitalize"
+                    >
+                      {selectedBooking.status}
+                    </Badge>
+                  </p>
+                  <p>
+                    <strong>Deadline:</strong> 
+                    <span className="ms-2">
+                      <FontAwesomeIcon icon={faCalendarAlt} className="me-1 text-secondary" />
+                      {formatDate(selectedBooking.deadline)}
+                    </span>
+                  </p>
+                </div>
+              </Col>
+              
+              <Col md={6}>
+                <div className="mb-3">
+                  <h6>Assignment Details:</h6>
+                  <div className="border p-3 bg-light rounded">
+                    {selectedBooking.details}
+                  </div>
+                </div>
+                
+                {selectedBooking.fileUrl && (
+                  <div className="mb-3">
+                    <h6>Attached File:</h6>
+                    <Button 
+                      variant="outline-primary"
+                      href={selectedBooking.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FontAwesomeIcon icon={faPaperclip} className="me-2" />
+                      View Uploaded File
+                    </Button>
+                  </div>
+                )}
+              </Col>
+            </Row>
             
-            <div className="mb-3">
-              <p><strong>Service:</strong> {selectedBooking.serviceType}</p>
-              <p><strong>Education Level:</strong> {selectedBooking.educationLevel}</p>
-              <p><strong>Subject:</strong> {selectedBooking.subject}</p>
-              <p><strong>Status:</strong> 
-                <Badge 
-                  bg={
-                    selectedBooking.status === 'completed' ? 'success' :
-                    selectedBooking.status === 'rejected' ? 'danger' :
-                    selectedBooking.status === 'in-progress' ? 'warning' : 'secondary'
-                  }
-                  className="ms-2 text-capitalize"
-                >
-                  {selectedBooking.status}
-                </Badge>
-              </p>
-            </div>
-            
-            <div className="mb-3">
-              <h6>Assignment Details:</h6>
-              <p>{selectedBooking.details}</p>
-            </div>
-            
-            <div className="d-flex gap-2">
+            <div className="d-flex gap-2 mt-4">
               <Button 
                 variant="success" 
                 onClick={() => {

@@ -28,24 +28,24 @@ const AdminSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-// Password hashing
-AdminSchema.pre('save', async function(next) {
+// Password hashing before save
+AdminSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(this.password, 12);
   next();
 });
 
-// Password comparison method
-AdminSchema.methods.correctPassword = async function(candidatePassword, userPassword) {
+// Method to compare passwords
+AdminSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-// Initialize first admin
+// Initialize first admin if not exists
 const initializeAdmin = async () => {
   const Admin = mongoose.model('Admin');
   const adminEmail = process.env.ADMIN_EMAIL;
   const adminPassword = process.env.ADMIN_PASSWORD;
-  
+
   if (adminEmail && adminPassword) {
     const existingAdmin = await Admin.findOne({ email: adminEmail });
     if (!existingAdmin) {
@@ -59,5 +59,6 @@ const initializeAdmin = async () => {
   }
 };
 
-module.exports = mongoose.model('Admin', AdminSchema);
+const Admin = mongoose.model('Admin', AdminSchema);
+module.exports = Admin;
 module.exports.initializeAdmin = initializeAdmin;

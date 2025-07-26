@@ -1,5 +1,12 @@
 const Booking = require('../models/Booking');
 const APIFeatures = require('../utils/apiFeatures');
+const fs = require('fs');
+const path = require('path');
+
+// Helper function to generate ticket number
+const generateTicketNumber = () => {
+  return 'TKT-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+};
 
 // CREATE a new booking
 exports.createBooking = async (req, res) => {
@@ -12,10 +19,19 @@ exports.createBooking = async (req, res) => {
       serviceType,
       educationLevel,
       subject,
-      details
+      details,
+      deadline
     } = req.body;
 
-    const booking = await Booking.create({
+    // Validate deadline
+    if (new Date(deadline) <= new Date()) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Deadline must be in the future'
+      });
+    }
+
+    const bookingData = {
       firstName,
       lastName,
       phone,
@@ -23,8 +39,17 @@ exports.createBooking = async (req, res) => {
       serviceType,
       educationLevel,
       subject,
-      details
-    });
+      details,
+      deadline,
+      ticketNumber: generateTicketNumber()
+    };
+
+    // Handle file upload if exists
+    if (req.file) {
+      bookingData.fileUrl = `/uploads/${req.file.filename}`;
+    }
+
+    const booking = await Booking.create(bookingData);
 
     res.status(201).json({
       status: 'success',
@@ -34,6 +59,10 @@ exports.createBooking = async (req, res) => {
     });
 
   } catch (err) {
+    // Remove uploaded file if error occurred
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
     res.status(400).json({
       status: 'fail',
       message: err.message
@@ -76,6 +105,13 @@ exports.updateBookingStatus = async (req, res) => {
       { new: true, runValidators: true }
     );
 
+    if (!booking) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'No booking found with that ID'
+      });
+    }
+
     res.status(200).json({
       status: 'success',
       data: {
@@ -93,8 +129,23 @@ exports.updateBookingStatus = async (req, res) => {
 // DELETE a booking
 exports.deleteBooking = async (req, res) => {
   try {
-    await Booking.findByIdAndDelete(req.params.id);
-    
+    const booking = await Booking.findByIdAndDelete(req.params.id);
+
+    if (!booking) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'No booking found with that ID'
+      });
+    }
+
+    // Delete associated file if exists
+    if (booking.fileUrl) {
+      const filePath = path.join(__dirname, '../../uploads', booking.fileUrl.split('/uploads/')[1]);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+
     res.status(204).json({
       status: 'success',
       data: null

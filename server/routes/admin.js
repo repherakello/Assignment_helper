@@ -1,8 +1,7 @@
 const express = require('express');
+const router = express.Router();
 const { login, getMe } = require('../controllers/admin');
 const { protect } = require('../middleware/auth');
-
-const router = express.Router();
 
 router.post('/login', login);
 router.get('/me', protect, getMe);

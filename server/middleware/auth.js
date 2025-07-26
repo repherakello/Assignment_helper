@@ -1,53 +1,44 @@
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/Admin');
 
-// Protect routes
+// Middleware to protect routes
 exports.protect = async (req, res, next) => {
   try {
-    // 1) Get token
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];
     }
 
     if (!token) {
-      return res.status(401).json({
-        success: false,
-        error: 'Not authorized to access this route'
-      });
+      return res.status(401).json({ success: false, message: 'You are not logged in' });
     }
 
-    // 2) Verify token
+    // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // 3) Check if admin exists
+    // Check if admin still exists
     const currentAdmin = await Admin.findById(decoded.id);
     if (!currentAdmin) {
-      return res.status(401).json({
-        success: false,
-        error: 'Admin no longer exists'
-      });
+      return res.status(401).json({ success: false, message: 'Admin not found' });
     }
 
-    // 4) Grant access
-    req.admin = currentAdmin;
+    // Check if admin is active
+    if (!currentAdmin.active) {
+      return res.status(403).json({ success: false, message: 'Admin is deactivated' });
+    }
+
+    req.user = currentAdmin;
     next();
   } catch (err) {
-    return res.status(401).json({
-      success: false,
-      error: 'Not authorized to access this route'
-    });
+    return res.status(403).json({ success: false, message: 'Invalid or expired token' });
   }
 };
 
-// Restrict to certain roles
+// Middleware to restrict access to specific roles
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.admin.role)) {
-      return res.status(403).json({
-        success: false,
-        error: 'You do not have permission to perform this action'
-      });
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ success: false, message: 'You do not have permission' });
     }
     next();
   };

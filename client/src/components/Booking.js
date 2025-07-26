@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Alert, Row, Col, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { faBook, faUserGraduate, faSchool, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faBook, faUserGraduate, faSchool, faPhone, faCalendarAlt, faPaperclip, faTicketAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Booking = () => {
@@ -15,9 +15,12 @@ const Booking = () => {
     subject: '',
     details: ''
   });
+  const [deadline, setDeadline] = useState('');
+  const [file, setFile] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [ticketNumber, setTicketNumber] = useState('');
 
   const serviceTypes = [
     "Full Class Assistance",
@@ -44,30 +47,43 @@ const Booking = () => {
     setFormData({...formData, [e.target.name]: e.target.value});
   };
 
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const generateTicketNumber = () => {
+    return 'TKT-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
 
     try {
-      const bookingData = {
-        firstName: formData.firstName.trim(),
-        lastName: formData.lastName.trim(),
-        phone: formData.phone.trim(),
-        email: formData.email.trim(),
-        serviceType: formData.serviceType,
-        educationLevel: formData.educationLevel,
-        subject: formData.subject.trim(),
-        details: formData.details.trim(),
-        status: 'pending' // Default status
-      };
+      const generatedTicket = generateTicketNumber();
+      setTicketNumber(generatedTicket);
+      
+      const formDataToSend = new FormData();
+      formDataToSend.append('firstName', formData.firstName.trim());
+      formDataToSend.append('lastName', formData.lastName.trim());
+      formDataToSend.append('phone', formData.phone.trim());
+      formDataToSend.append('email', formData.email.trim());
+      formDataToSend.append('serviceType', formData.serviceType);
+      formDataToSend.append('educationLevel', formData.educationLevel);
+      formDataToSend.append('subject', formData.subject.trim());
+      formDataToSend.append('details', formData.details.trim());
+      formDataToSend.append('deadline', deadline);
+      formDataToSend.append('ticketNumber', generatedTicket);
+      formDataToSend.append('status', 'pending');
+      
+      if (file) {
+        formDataToSend.append('assignmentFile', file);
+      }
 
       const response = await fetch('http://localhost:5000/api/bookings', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bookingData)
+        body: formDataToSend
       });
 
       const data = await response.json();
@@ -80,6 +96,7 @@ const Booking = () => {
     } catch (error) {
       console.error('Booking error:', error);
       setError(error.message || 'Failed to submit booking. Please check your information and try again.');
+      setTicketNumber('');
     } finally {
       setIsLoading(false);
     }
@@ -108,6 +125,10 @@ const Booking = () => {
         <Alert variant="success" className="text-center">
           <h4>Request Submitted Successfully!</h4>
           <p>We've received your request and will contact you shortly.</p>
+          <div className="ticket-notification mb-3">
+            <FontAwesomeIcon icon={faTicketAlt} className="me-2" />
+            Your ticket number: <strong>{ticketNumber}</strong>
+          </div>
           <div className="d-flex justify-content-center gap-3 mt-3">
             <Button 
               as={Link}
@@ -118,7 +139,10 @@ const Booking = () => {
             </Button>
             <Button 
               variant="outline-primary" 
-              onClick={() => setSubmitted(false)}
+              onClick={() => {
+                setSubmitted(false);
+                setTicketNumber('');
+              }}
             >
               Submit Another Request
             </Button>
@@ -187,6 +211,35 @@ const Booking = () => {
                   onChange={handleChange}
                   placeholder="your@email.com"
                 />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>
+                  <FontAwesomeIcon icon={faCalendarAlt} className="me-2" />
+                  Deadline for Completion *
+                </Form.Label>
+                <Form.Control 
+                  type="date" 
+                  value={deadline}
+                  onChange={(e) => setDeadline(e.target.value)}
+                  required
+                  min={new Date().toISOString().split('T')[0]}
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>
+                  <FontAwesomeIcon icon={faPaperclip} className="me-2" />
+                  Upload Assignment File
+                </Form.Label>
+                <Form.Control 
+                  type="file"
+                  onChange={handleFileChange}
+                  accept=".pdf,.doc,.docx,.txt,.zip,.rar"
+                />
+                <Form.Text className="text-muted">
+                  Upload your assignment instructions or materials (optional)
+                </Form.Text>
               </Form.Group>
 
               <Form.Group className="mb-3">
