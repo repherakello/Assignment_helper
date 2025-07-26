@@ -5,12 +5,14 @@ import {
   FaEnvelope, 
   FaTiktok, 
   FaInstagram,
-  FaHome,
-  FaBalanceScale,
   FaShieldAlt,
-  FaGraduationCap
+  FaBalanceScale,
+  FaGraduationCap,
+  FaCookieBite,
+  FaCopyright,
+  FaTools
 } from 'react-icons/fa';
-import './Footer.css'; // Create this file
+import './Footer.css';
 
 const Footer = () => {
   return (
@@ -43,7 +45,25 @@ const Footer = () => {
               <li>
                 <Link to="/honor-code">
                   <FaGraduationCap className="footer-icon" />
-                  Honor Code
+                    Our Code of Conduct
+                </Link>
+              </li>
+              <li>
+                <Link to="/cookie-policy">
+                  <FaCookieBite className="footer-icon" />
+                  Cookie Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/copyright">
+                  <FaCopyright className="footer-icon" />
+                  Copyright
+                </Link>
+              </li>
+              <li>
+                <Link to="/service-policy">
+                  <FaTools className="footer-icon" />
+                  Service Policy
                 </Link>
               </li>
             </ul>

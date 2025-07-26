@@ -12,6 +12,7 @@ import Services from './components/Services';
 import SuccessStories from './components/SuccessStories';
 import AdminLogin from './components/AdminLogin';
 import Footer from './components/Footer';
+import AboutUs from './components/AboutUs';
 
 // Legal components
 import PrivacyPolicy from './components/legal/PrivacyPolicy';
@@ -57,7 +58,6 @@ const AuthLayout = ({ children }) => (
 );
 
 function App() {
-  // Nuclear option for scroll reset (additional protection)
   useEffect(() => {
     const handleRouteChange = () => {
       window.scrollTo(0, 0);
@@ -77,7 +77,7 @@ function App() {
           <Route path="/book" element={<PublicLayout><Booking /></PublicLayout>} />
           <Route path="/services" element={<PublicLayout><Services /></PublicLayout>} />
           <Route path="/success-stories" element={<PublicLayout><SuccessStories /></PublicLayout>} />
-          <Route path="/about" element={<PublicLayout><SuccessStories /></PublicLayout>} />
+          <Route path="/about" element={<PublicLayout><AboutUs /></PublicLayout>} />
 
           {/* Legal Routes */}
           <Route path="/privacy" element={<PublicLayout><PrivacyPolicy /></PublicLayout>} />

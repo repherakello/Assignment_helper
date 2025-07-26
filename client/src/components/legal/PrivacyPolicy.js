@@ -1,5 +1,5 @@
-import React from "react";
-import "./legal.css";
+import React from 'react';
+import './legal.css';
 
 const PrivacyPolicy = () => {
   return (
@@ -17,9 +17,9 @@ const PrivacyPolicy = () => {
       <p>
         Your data is used for:
         <ul>
-          <li>Processing assignments and payments.</li>
-          <li>Communicating service updates.</li>
-          <li>Complying with legal obligations.</li>
+          <li>Processing assignments and payments</li>
+          <li>Communicating service updates</li>
+          <li>Complying with legal obligations</li>
         </ul>
       </p>
 
@@ -27,17 +27,6 @@ const PrivacyPolicy = () => {
       <p>
         We implement SSL encryption and restrict access to your data. 
         We <strong>do not sell</strong> your information to third parties.
-      </p>
-
-      <h2>4. Your Rights</h2>
-      <p>
-        You may request access, correction, or deletion of your data by contacting us at 
-        <a href="mailto:assignhelper@gmail.com"> assignhelper@gmail.com</a>.
-      </p>
-
-      <h2>5. Changes to This Policy</h2>
-      <p>
-        Updates will be posted here with a revised effective date.
       </p>
     </div>
   );

@@ -1,10 +1,10 @@
-import React from "react";
-import "./legal.css";
+import React from 'react';
+import './legal.css';
 
 const HonorCode = () => {
   return (
     <div className="legal-container">
-      <h1>Honor Code</h1>
+      <h1>Code Of Conduct</h1>
       <p><strong>Effective Date:</strong> February 10, 2025</p>
       
       <h2>Academic Integrity</h2>
@@ -18,22 +18,9 @@ const HonorCode = () => {
       <p>
         Our services are intended to:
         <ul>
-          <li>Help you understand complex topics.</li>
-          <li>Serve as guidance for your own work.</li>
+          <li>Help you understand complex topics</li>
+          <li>Serve as guidance for your own work</li>
         </ul>
-      </p>
-
-      <h2>Prohibited Actions</h2>
-      <p>
-        <ul>
-          <li>Submitting someone else's work as your own.</li>
-          <li>Plagiarism or cheating.</li>
-          <li>Misrepresenting content to academic authorities.</li>
-        </ul>
-      </p>
-
-      <p>
-        Contact us at <a href="mailto:assignhelper@gmail.com">assignhelper@gmail.com</a> for violations.
       </p>
     </div>
   );

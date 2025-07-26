@@ -1,5 +1,5 @@
-import React from "react";
-import "./legal.css";
+import React from 'react';
+import './legal.css';
 
 const ServicePolicy = () => {
   return (
@@ -11,19 +11,14 @@ const ServicePolicy = () => {
       <p>
         Assignment Helper provides:
         <ul>
-          <li>Tutoring and assignment guidance.</li>
-          <li>Reference materials (not for submission as-is).</li>
+          <li>Tutoring and assignment guidance</li>
+          <li>Reference materials (not for submission as-is)</li>
         </ul>
       </p>
 
       <h2>2. Turnaround Time</h2>
       <p>
         Delivery timelines vary by assignment complexity. Rush services may incur fees.
-      </p>
-
-      <h2>3. Revisions</h2>
-      <p>
-        Free revisions are offered within 7 days of delivery if requirements were unmet.
       </p>
     </div>
   );

@@ -1,5 +1,5 @@
-import React from "react";
-import "./legal.css";
+import React from 'react';
+import './legal.css';
 
 const TermsConditions = () => {
   return (
@@ -11,9 +11,9 @@ const TermsConditions = () => {
       <p>
         By using Assignment Helper, you agree to:
         <ul>
-          <li>Provide accurate information for assignments.</li>
-          <li>Use completed work as a <strong>reference only</strong>.</li>
-          <li>Not redistribute our content without permission.</li>
+          <li>Provide accurate information for assignments</li>
+          <li>Use completed work as a <strong>reference only</strong></li>
+          <li>Not redistribute our content without permission</li>
         </ul>
       </p>
 
@@ -21,20 +21,6 @@ const TermsConditions = () => {
       <p>
         Payments are non-refundable once work begins. 
         Refunds may be issued for undelivered services (at our discretion).
-      </p>
-
-      <h2>3. Limitation of Liability</h2>
-      <p>
-        Assignment Helper is not liable for:
-        <ul>
-          <li>Grades or academic outcomes.</li>
-          <li>Misuse of provided materials.</li>
-        </ul>
-      </p>
-
-      <h2>4. Governing Law</h2>
-      <p>
-        These terms are governed by the laws of [Your Country/State].
       </p>
     </div>
   );

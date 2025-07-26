@@ -195,12 +195,13 @@ const Home = () => {
                 </blockquote>
               </div>
 
+              {/* Corrected Button Link */}
               <Button 
-              as={Link} 
-              to="/about" 
-              variant="primary" 
-              size="lg" 
-              className="mt-3"
+                as={Link} 
+                to="/success-stories"  // Changed from "/about" to "/success-stories"
+                variant="primary" 
+                size="lg" 
+                className="mt-3"
               >
                 Read More Success Stories
               </Button>

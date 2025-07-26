@@ -132,7 +132,6 @@
   padding: 5px 10px;
 }
 
-
 /* Success Stories Page */
 .success-stories-page {
   padding-top: 100px;
@@ -142,8 +141,8 @@
   transition: all 0.3s ease;
   border: none;
   box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    border-radius: 10px;
-    overflow: hidden;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .testimonial-card:hover {
@@ -156,8 +155,8 @@
 }
 
 .pagination-button {
-    min-width: 40px;
-    margin: 0 5px;
+  min-width: 40px;
+  margin: 0 5px;
 }
 
 /* Filter Buttons */
@@ -299,7 +298,47 @@
   font-weight: 500;
 }
 
-/* Add these styles at the bottom of your Home.css file */
+/* About Us Page Specific Styles */
+.about-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+              url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1470&q=80');
+  background-size: cover;
+  background-position: center;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+}
+
+.achievement-box {
+  background: rgba(52, 152, 219, 0.1);
+  border-left: 4px solid #3498db;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.faq-header {
+  background-color: white;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.faq-header:hover {
+  background-color: #f8f9fa;
+}
+
+.faq-header:not(.collapsed) {
+  background-color: #f8f9fa;
+  color: #2c3e50;
+}
+
+.accordion .card {
+  border: 1px solid rgba(0,0,0,0.05);
+  overflow: hidden;
+}
 
 /* Dashboard Styles */
 .stat-card {
@@ -364,18 +403,6 @@
 .text-capitalize {
   text-transform: capitalize;
 }
-
-/* Responsive adjustments for dashboard */
-@media (max-width: 768px) {
-  .stat-card h2 {
-    font-size: 1.8rem;
-  }
-  
-  .modal-content {
-    width: 95%;
-  }
-}
-
 
 /* Fixed Book Button */
 .fixed-book-button {
