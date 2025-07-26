@@ -5,7 +5,8 @@ import {
   Col, 
   Card, 
   Accordion,
-  Image 
+  Image,
+  useAccordionButton 
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -13,9 +14,38 @@ import {
   faAward, 
   faGraduationCap,
   faGlobe,
-  faUserTie
+  faDollarSign,
+  faBook,
+  faClock,
+  faCalendarAlt,
+  faUserTie,
+  faChevronDown,
+  faChevronUp
 } from '@fortawesome/free-solid-svg-icons';
 import './Home.css';
+
+function CustomToggle({ children, eventKey, activeKey, onClick }) {
+  const decoratedOnClick = useAccordionButton(eventKey, onClick);
+  const isActive = activeKey === eventKey;
+
+  return (
+    <button
+      type="button"
+      className={`faq-question w-100 text-start ${isActive ? 'active' : ''}`}
+      onClick={decoratedOnClick}
+    >
+      <div className="d-flex justify-content-between align-items-center">
+        <div>
+          {children}
+        </div>
+        <FontAwesomeIcon 
+          icon={isActive ? faChevronUp : faChevronDown} 
+          className="ms-2"
+        />
+      </div>
+    </button>
+  );
+}
 
 const AboutUs = () => {
   const [activeKey, setActiveKey] = useState(null);
@@ -125,9 +155,96 @@ const AboutUs = () => {
           <h2 className="text-center mb-5 section-title">Frequently Asked Questions</h2>
           <Row className="justify-content-center">
             <Col lg={8}>
-              <Accordion activeKey={activeKey} onSelect={toggleAccordion}>
-                {/* FAQ Items remain unchanged from previous version */}
-                {/* ... */}
+              <Accordion activeKey={activeKey}>
+                <Card className="mb-3 border-0 shadow-sm">
+                  <Card.Header className="p-0 bg-white">
+                    <CustomToggle 
+                      eventKey="0" 
+                      activeKey={activeKey}
+                      onClick={() => toggleAccordion("0")}
+                    >
+                      <FontAwesomeIcon icon={faGlobe} className="me-2" />
+                      Do you work only in USA and Canada?
+                    </CustomToggle>
+                  </Card.Header>
+                  <Accordion.Collapse eventKey="0">
+                    <Card.Body className="pt-3">
+                      No. We are cross border freelancers who work to help students achieve their academic excellence around the Globe.
+                    </Card.Body>
+                  </Accordion.Collapse>
+                </Card>
+
+                <Card className="mb-3 border-0 shadow-sm">
+                  <Card.Header className="p-0 bg-white">
+                    <CustomToggle 
+                      eventKey="1" 
+                      activeKey={activeKey}
+                      onClick={() => toggleAccordion("1")}
+                    >
+                      <FontAwesomeIcon icon={faDollarSign} className="me-2" />
+                      What's the Pricing?
+                    </CustomToggle>
+                  </Card.Header>
+                  <Accordion.Collapse eventKey="1">
+                    <Card.Body className="pt-3">
+                      Can't share the pricing openly since we work for different levels of Academia and the prices vary hence pricing is based on your request booking. Therefore we contact our clients for private Pricing quote.
+                    </Card.Body>
+                  </Accordion.Collapse>
+                </Card>
+
+                <Card className="mb-3 border-0 shadow-sm">
+                  <Card.Header className="p-0 bg-white">
+                    <CustomToggle 
+                      eventKey="2" 
+                      activeKey={activeKey}
+                      onClick={() => toggleAccordion("2")}
+                    >
+                      <FontAwesomeIcon icon={faBook} className="me-2" />
+                      Can You Help with my entire course?
+                    </CustomToggle>
+                  </Card.Header>
+                  <Accordion.Collapse eventKey="2">
+                    <Card.Body className="pt-3">
+                      Yes we can. And the pricing for it will be agreed on the charts based on your academia level. It is also advisable that even as we assist with the course, You should always cross check your course work and Know what it contains.
+                    </Card.Body>
+                  </Accordion.Collapse>
+                </Card>
+
+                <Card className="mb-3 border-0 shadow-sm">
+                  <Card.Header className="p-0 bg-white">
+                    <CustomToggle 
+                      eventKey="3" 
+                      activeKey={activeKey}
+                      onClick={() => toggleAccordion("3")}
+                    >
+                      <FontAwesomeIcon icon={faClock} className="me-2" />
+                      How long does it take you to reply to a booking and start working on my Booking?
+                    </CustomToggle>
+                  </Card.Header>
+                  <Accordion.Collapse eventKey="3">
+                    <Card.Body className="pt-3">
+                      We have 24/7 services therefore our replies are instant and after agreement on payment we start working Asap!
+                    </Card.Body>
+                  </Accordion.Collapse>
+                </Card>
+
+                <Card className="mb-3 border-0 shadow-sm">
+                  <Card.Header className="p-0 bg-white">
+                    <CustomToggle 
+                      eventKey="4" 
+                      activeKey={activeKey}
+                      onClick={() => toggleAccordion("4")}
+                    >
+                      <FontAwesomeIcon icon={faCalendarAlt} className="me-2" />
+                      I have a self-paced class, can you assist me to finish it by this date?
+                    </CustomToggle>
+                  </Card.Header>
+                  <Accordion.Collapse eventKey="4">
+                    <Card.Body className="pt-3">
+                      Yes we can and remember to inform us about the date when filling the Booking form.
+                    </Card.Body>
+                  </Accordion.Collapse>
+                </Card>
               </Accordion>
             </Col>
           </Row>
