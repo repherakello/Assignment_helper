@@ -139,10 +139,14 @@ const Services = () => {
       services: [
         "Edgenuity Coursework",
         "Edmentum Assignments",
-        "Brightspace Support",
+        "Penn Foster High School",
         "AP Classes",
-        "IB Program",
-        "Standardized Test Prep"
+        "Sophia Learning",
+        "Florida Virtual School (FLVS)",
+        "K12 Online School",
+        "Ontario Virtual School (OVS)",
+        "Acellus Academy",
+        "IB Program"
       ]
     },
     {

@@ -24,7 +24,7 @@ const Home = () => {
 
   // Data for stats
   const stats = [
-    { value: "5,000+", label: "Students Helped", icon: faUsers },
+    { value: "27k+", label: "Students Helped", icon: faUsers },
     { value: "98%", label: "Satisfaction Rate", icon: faAward },
     { value: "24/7", label: "Support Available", icon: faClock },
     { value: "100+", label: "Subject Experts", icon: faUserGraduate }
@@ -42,7 +42,7 @@ const Home = () => {
   const carouselItems = [
     {
       image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1470&q=80",
-      title: "Assignment Helper - Your Academic Success Partner",
+      title: "A+ ORBIT - Your Academic Success Partner",
       text: "Trusted by thousands of students worldwide for expert help in all subjects.",
       buttons: [
         { variant: "primary", text: "Get Started Now", link: "/book" },

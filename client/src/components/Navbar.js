@@ -33,7 +33,7 @@ const CustomNavbar = () => {
     <Navbar bg="dark" variant="dark" expand="lg" fixed="top" className="py-3">
       <Container>
         <Navbar.Brand as={Link} to="/" className="fw-bold">
-          Assignment Helper
+          A+ ORBIT
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

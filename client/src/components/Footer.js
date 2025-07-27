@@ -22,7 +22,7 @@ const Footer = () => {
           <Col md={4} className="footer-brand">
             <h5>
               <FaGraduationCap className="footer-icon" />
-              Assignment Helper
+              A+ ORBIT
             </h5>
             <p className="text-muted">Your academic success partner</p>
           </Col>
@@ -98,7 +98,7 @@ const Footer = () => {
           <Col className="text-center footer-bottom">
             <hr className="footer-divider" />
             <p className="copyright">
-              © {new Date().getFullYear()} Assignment Helper. All rights reserved.
+              © {new Date().getFullYear()} A+ orbit. All rights reserved.
             </p>
           </Col>
         </Row>

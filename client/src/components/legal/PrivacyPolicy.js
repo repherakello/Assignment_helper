@@ -5,7 +5,7 @@ const PrivacyPolicy = () => {
   return (
     <div className="legal-container">
       <h1>Privacy Policy</h1>
-      <p><strong>Effective Date:</strong> July 26, 2025</p>
+      <p><strong>Effective Date:</strong> February 1, 2025</p>
       
       <h2>1. Information We Collect</h2>
       <p>
@@ -20,6 +20,8 @@ const PrivacyPolicy = () => {
           <li>Processing assignments and payments</li>
           <li>Communicating service updates</li>
           <li>Complying with legal obligations</li>
+            <li>Improving our services based on user feedback</li>
+            <li>Personalizing your experience on our platform</li>
         </ul>
       </p>
 

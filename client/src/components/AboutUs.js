@@ -236,7 +236,7 @@ const AboutUs = () => {
                       onClick={() => toggleAccordion("4")}
                     >
                       <FontAwesomeIcon icon={faCalendarAlt} className="me-2" />
-                      I have a self-paced class, can you assist me to finish it by this date?
+                      I have a self-paced class, can you assist me to finish it by this date[Your provided date]?
                     </CustomToggle>
                   </Card.Header>
                   <Accordion.Collapse eventKey="4">
