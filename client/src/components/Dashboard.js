@@ -116,7 +116,6 @@ const Dashboard = () => {
 
       {error && <Alert variant="danger">{error}</Alert>}
 
-      {/* Stats Cards */}
       <Row className="mb-4">
         <Col md={3}>
           <div className="stat-card bg-primary text-white p-3 rounded">
@@ -144,7 +143,6 @@ const Dashboard = () => {
         </Col>
       </Row>
 
-      {/* Search and Filter Bar */}
       <Row className="mb-4 g-3">
         <Col md={6}>
           <InputGroup>
@@ -179,7 +177,6 @@ const Dashboard = () => {
         </Col>
       </Row>
 
-      {/* Bookings Table */}
       <div className="table-responsive">
         <Table striped bordered hover>
           <thead className="table-dark">
@@ -275,7 +272,6 @@ const Dashboard = () => {
         </Table>
       </div>
 
-      {/* Booking Details Modal */}
       {showDetailsModal && selectedBooking && (
         <div className="modal-backdrop">
           <div className="modal-content p-4 bg-white rounded shadow" style={{ maxWidth: '800px' }}>
@@ -340,12 +336,13 @@ const Dashboard = () => {
                     <h6>Attached File:</h6>
                     <Button 
                       variant="outline-primary"
-                      href={selectedBooking.fileUrl}
+                      href={`http://localhost:5000${selectedBooking.fileUrl}`}
                       target="_blank"
                       rel="noopener noreferrer"
+                      download
                     >
                       <FontAwesomeIcon icon={faPaperclip} className="me-2" />
-                      View Uploaded File
+                      Download File
                     </Button>
                   </div>
                 )}

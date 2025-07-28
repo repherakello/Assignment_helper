@@ -61,8 +61,8 @@ const AboutUs = () => {
         <Container className="h-100 d-flex align-items-center">
           <Row>
             <Col lg={8} className="mx-auto text-center">
-              <h1 className="display-4 fw-bold text-white">About Assignment Helper</h1>
-              <p className="lead text-white">Trusted academic support since 2017</p>
+              <h1 className="display-4 fw-bold text-white">About A+ ORBIT</h1>
+              <p className="lead text-white">Trusted academic support since 2019</p>
             </Col>
           </Row>
         </Container>
@@ -75,7 +75,7 @@ const AboutUs = () => {
             <Col lg={6} className="mb-4 mb-lg-0">
               <h2 className="section-title mb-4">Our Journey</h2>
               <p className="lead">
-                Founded in 2017 to support university students, we expanded during the pandemic to help high school diploma seekers.
+                Founded in 2019 to support university students, we expanded during the pandemic to help high school diploma seekers. Most importantly we are now connecting verious educational needs as we are now in <strong>USA</strong> and <strong>Canada</strong> also. It's a great achievement now that we are fully part of the worldwide education system assistant.
               </p>
               <p>
                 Today, we've empowered <strong>27,000+ students</strong> across all academic levels, including <strong>19,000+ graduates</strong> and postgraduates worldwide.
@@ -86,7 +86,8 @@ const AboutUs = () => {
                 <div>
                   <h4>Our Founder</h4>
                   <p>
-                    A Computer Science graduate with expertise in AI and Machine Learning, passionate about creating accessible academic support for students at all levels.
+                    A Computer Science graduate with expertise in AI and Machine Learning, passionate about creating accessible academic support for students at all levels. 
+                    Committed to leveraging technology to enhance learning experiences and academic success.
                   </p>
                 </div>
               </div>
@@ -164,12 +165,12 @@ const AboutUs = () => {
                       onClick={() => toggleAccordion("0")}
                     >
                       <FontAwesomeIcon icon={faGlobe} className="me-2" />
-                      Do you work only in USA and Canada?
+                      Do you work in USA and Canada?
                     </CustomToggle>
                   </Card.Header>
                   <Accordion.Collapse eventKey="0">
                     <Card.Body className="pt-3">
-                      No. We are cross border freelancers who work to help students achieve their academic excellence around the Globe.
+                      Yes we do. We are cross border freelancers who work to help students achieve their academic excellence around the Globe.
                     </Card.Body>
                   </Accordion.Collapse>
                 </Card>

@@ -3,11 +3,6 @@ const APIFeatures = require('../utils/apiFeatures');
 const fs = require('fs');
 const path = require('path');
 
-// Helper function to generate ticket number
-const generateTicketNumber = () => {
-  return 'TKT-' + Math.random().toString(36).substr(2, 8).toUpperCase();
-};
-
 // CREATE a new booking
 exports.createBooking = async (req, res) => {
   try {
@@ -20,10 +15,18 @@ exports.createBooking = async (req, res) => {
       educationLevel,
       subject,
       details,
-      deadline
+      deadline,
+      ticketNumber
     } = req.body;
 
-    // Validate deadline
+    // Validate required fields
+    if (!ticketNumber || !ticketNumber.startsWith('TKT-')) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Valid ticket number is required'
+      });
+    }
+
     if (new Date(deadline) <= new Date()) {
       return res.status(400).json({
         status: 'fail',
@@ -41,10 +44,11 @@ exports.createBooking = async (req, res) => {
       subject,
       details,
       deadline,
-      ticketNumber: generateTicketNumber()
+      ticketNumber,
+      status: 'pending'
     };
 
-    // Handle file upload if exists
+    // Handle file upload if exists (optional)
     if (req.file) {
       bookingData.fileUrl = `/uploads/${req.file.filename}`;
     }
@@ -59,7 +63,6 @@ exports.createBooking = async (req, res) => {
     });
 
   } catch (err) {
-    // Remove uploaded file if error occurred
     if (req.file) {
       fs.unlinkSync(req.file.path);
     }
@@ -138,7 +141,6 @@ exports.deleteBooking = async (req, res) => {
       });
     }
 
-    // Delete associated file if exists
     if (booking.fileUrl) {
       const filePath = path.join(__dirname, '../../uploads', booking.fileUrl.split('/uploads/')[1]);
       if (fs.existsSync(filePath)) {

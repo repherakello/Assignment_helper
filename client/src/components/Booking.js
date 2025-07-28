@@ -230,7 +230,7 @@ const Booking = () => {
               <Form.Group className="mb-3">
                 <Form.Label>
                   <FontAwesomeIcon icon={faPaperclip} className="me-2" />
-                  Upload Assignment File
+                  Upload Assignment File (Optional)
                 </Form.Label>
                 <Form.Control 
                   type="file"
@@ -238,7 +238,7 @@ const Booking = () => {
                   accept=".pdf,.doc,.docx,.txt,.zip,.rar"
                 />
                 <Form.Text className="text-muted">
-                  Upload your assignment instructions or materials (optional)
+                  Upload your assignment instructions or materials
                 </Form.Text>
               </Form.Group>
 
